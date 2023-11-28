@@ -1,48 +1,23 @@
-#! /usr/bin/python3
+#! /usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright Statement:
+# Copyright (C) 2016 MediaTek Inc.
 #
-# This software/firmware and related documentation ("MediaTek Software") are
-# protected under relevant copyright laws. The information contained herein is
-# confidential and proprietary to MediaTek Inc. and/or its licensors. Without
-# the prior written permission of MediaTek inc. and/or its licensors, any
-# reproduction, modification, use or disclosure of MediaTek Software, and
-# information contained herein, in whole or in part, shall be strictly
-# prohibited.
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
 #
-# MediaTek Inc. (C) 2019. All rights reserved.
-#
-# BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
-# THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
-# RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
-# ON AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL
-# WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
-# NONINFRINGEMENT. NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH
-# RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
-# INCORPORATED IN, OR SUPPLIED WITH THE MEDIATEK SOFTWARE, AND RECEIVER AGREES
-# TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
-# RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
-# OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN MEDIATEK
-# SOFTWARE. MEDIATEK SHALL ALSO NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE
-# RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
-# STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S
-# ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE
-# RELEASED HEREUNDER WILL BE, AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE
-# MEDIATEK SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
-# CHARGE PAID BY RECEIVER TO MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
-#
-# The following software/firmware and/or related documentation ("MediaTek
-# Software") have been modified by MediaTek Inc. All revisions are subject to
-# any receiver's applicable license agreements with MediaTek Inc.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See http://www.gnu.org/licenses/gpl-2.0.html for more details.
 
 import re
 import string
-import configparser
+import ConfigParser
 import xml.dom.minidom
 
-from obj.ModuleObj import ModuleObj
+from ModuleObj import ModuleObj
 from utility.util import LogLevel
 from utility.util import log
 from data.KpdData import KpdData
@@ -54,20 +29,20 @@ class KpdObj(ModuleObj):
 
 
     def get_cfgInfo(self):
-        cp = configparser.ConfigParser(allow_no_value=True, strict=False)
+        cp = ConfigParser.ConfigParser(allow_no_value=True)
         cp.read(ModuleObj.get_cmpPath())
 
         ops = cp.options('Key_definition')
         for op in ops:
-            KpdData._keyValueMap[op.upper()] = int(cp.get('Key_definition', op))
+            KpdData._keyValueMap[op.upper()] = string.atoi(cp.get('Key_definition', op))
 
         KpdData._keyValueMap['NC'] = 0
 
         cp.read(ModuleObj.get_figPath())
         if cp.has_option('KEYPAD_EXTEND_TYPE', 'KEY_ROW'):
-            KpdData.set_row_ext(int(cp.get('KEYPAD_EXTEND_TYPE', 'KEY_ROW')))
+            KpdData.set_row_ext(string.atoi(cp.get('KEYPAD_EXTEND_TYPE', 'KEY_ROW')))
         if cp.has_option('KEYPAD_EXTEND_TYPE', 'KEY_COLUMN'):
-            KpdData.set_col_ext(int(cp.get('KEYPAD_EXTEND_TYPE', 'KEY_COLUMN')))
+            KpdData.set_col_ext(string.atoi(cp.get('KEYPAD_EXTEND_TYPE', 'KEY_COLUMN')))
 
         return True
 
@@ -76,15 +51,12 @@ class KpdObj(ModuleObj):
         for node in nodes:
             if node.nodeType == xml.dom.Node.ELEMENT_NODE:
                 if node.nodeName == 'row':
-                    row = int(node.childNodes[0].nodeValue)
+                    row = string.atoi(node.childNodes[0].nodeValue)
                     KpdData.set_row(row)
 
                 if node.nodeName == 'column':
-                    col = int(node.childNodes[0].nodeValue)
+                    col = string.atoi(node.childNodes[0].nodeValue)
                     KpdData.set_col(col)
-
-                if KpdData.get_row() == 0 or KpdData.get_col() == 0:
-                    return True
 
                 if node.nodeName == 'keyMatrix':
                     content = node.childNodes[0].nodeValue
@@ -96,7 +68,7 @@ class KpdObj(ModuleObj):
                             matrix.append(item)
                     KpdData.set_matrix(matrix)
                     for item in matrix:
-                        if item != 'NC':
+                        if cmp(item, 'NC') != 0:
                             KpdData._usedKeys.append(item)
                     KpdData._usedKeys.append('POWER')
 
@@ -122,7 +94,7 @@ class KpdObj(ModuleObj):
                     KpdData._modeKeys['FACTORY'] = keys[2]
 
                 if node.nodeName == 'pwrKeyEint_gpioNum':
-                    num = int(node.childNodes[0].nodeValue)
+                    num = string.atoi(node.childNodes[0].nodeValue)
                     KpdData.set_gpioNum(num)
 
                 if node.nodeName == 'pwrKeyUtility':
@@ -155,7 +127,7 @@ class KpdObj(ModuleObj):
                     KpdData.set_gpioDinHigh(flag)
 
                 if node.nodeName == 'pressPeriod':
-                    time = int(node.childNodes[0].nodeValue)
+                    time = string.atoi(node.childNodes[0].nodeValue)
                     KpdData.set_pressTime(time)
 
                 if node.nodeName == 'keyType':
@@ -169,13 +141,9 @@ class KpdObj(ModuleObj):
         self.read(node)
 
     def gen_files(self):
-        if KpdData.get_row() == 0 or KpdData.get_col() == 0:
-            return
         ModuleObj.gen_files(self)
 
     def gen_spec(self, para):
-        if KpdData.get_row() == 0 or KpdData.get_col() == 0:
-            return
         ModuleObj.gen_spec(self, para)
 
 
@@ -203,7 +171,7 @@ class KpdObj(ModuleObj):
         # do not gen this macro if the home key is null
         if KpdData.get_homeKey() != '':
             gen_str += '''#define KPD_PMIC_RSTKEY_MAP\tKEY_%s\n''' %(KpdData.get_homeKey())
-        if KpdData.get_keyType() != 'EXTEND_TYPE':
+        if cmp(KpdData.get_keyType(), 'EXTEND_TYPE') != 0:
             gen_str += '''#define MTK_PMIC_PWR_KEY\t%d\n''' %(KpdData.get_col() - 1)
             if KpdData.get_homeKey() != '':
                 gen_str += '''#define MTK_PMIC_RST_KEY\t\t%d\n''' %(2*KpdData.get_col() - 1)
@@ -223,11 +191,11 @@ class KpdObj(ModuleObj):
 
         if KpdData.get_keyType() == 'NORMAL_TYPE':
             for key in KpdData.get_matrix():
-                if key != 'NC':
+                if cmp(key, 'NC') != 0:
                     gen_str += '''\t[%d] = KEY_%s,\t\\\n''' %(KpdData.get_matrix().index(key), key)
         else:
             for key in KpdData.get_matrix_ext():
-                if key != 'NC':
+                if cmp(key, 'NC') != 0:
                     gen_str += '''\t[%d] = KEY_%s,\t\\\n''' %(KpdData.get_matrix_ext().index(key), key)
 
         gen_str += '''}\n'''
@@ -241,7 +209,7 @@ class KpdObj(ModuleObj):
         gen_str += '''\n'''
 
         for key in KpdData.get_downloadKeys():
-            if key != 'NC':
+            if cmp(key, 'NC') != 0:
                 dlIdx = KpdData.get_downloadKeys().index(key)
                 mtxIdx = self.get_matrixIdx(key)
                 gen_str += '''#define KPD_DL_KEY%d\t%d\t/* KEY_%s */\n''' %(dlIdx+1, mtxIdx, key)
@@ -252,7 +220,7 @@ class KpdObj(ModuleObj):
         gen_str += '''/***********************************************************/\n'''
 
         for (key, value) in KpdData.get_modeKeys().items():
-            if value != 'NC':
+            if cmp(value, 'NC') != 0:
                 idx = self.get_matrixIdx(value)
                 #idx = KpdData.get_matrix().index(value)
                 gen_str += '''#define MT65XX_%s_KEY\t%d\t/* KEY_%s */\n''' %(key, idx, value)
@@ -263,23 +231,21 @@ class KpdObj(ModuleObj):
 
     def get_matrixIdx(self, value):
         if KpdData.get_keyType() == 'NORMAL_TYPE':
-            if value == 'POWER':
+            if cmp(value, 'POWER') == 0:
                 return KpdData.get_col() - 1
-            elif value == KpdData.get_homeKey():
+            elif cmp(value, KpdData.get_homeKey()) == 0:
                 return 2 * KpdData.get_col() - 1
             else:
                 return KpdData.get_matrix().index(value)
         elif KpdData.get_keyType() == 'EXTEND_TYPE':
-            if value == 'POWER':
+            if cmp(value, 'POWER') == 0:
                 return KpdData.get_col_ext() - 1
-            elif value == KpdData.get_homeKey():
+            elif cmp(value, KpdData.get_homeKey()) == 0:
                 return 2 * KpdData.get_col_ext() - 1
             else:
                 return KpdData.get_matrix_ext().index(value)
 
     def fill_dtsiFile(self):
-        if KpdData.get_row() == 0 or KpdData.get_col() == 0:
-            return ""
         gen_str = '''&keypad {\n'''
         gen_str += '''\tmediatek,kpd-key-debounce = <%d>;\n''' %(KpdData.get_pressTime())
         gen_str += '''\tmediatek,kpd-sw-pwrkey = <%d>;\n''' %(KpdData._keyValueMap[KpdData.get_utility()])
@@ -301,12 +267,8 @@ class KpdObj(ModuleObj):
             gen_str += '''\tmediatek,kpd-use-extend-type = <1>;\n'''
 
         #gen_str += '''\tmediatek,kpd-use-extend-type = <0>;\n'''
-        if KpdData.get_keyType() == 'NORMAL_TYPE':
-            gen_str += '''\t/*HW Keycode [0~%d] -> Linux Keycode*/\n''' %(KpdData.get_row() * KpdData.get_col() - 1)
-            gen_str += '''\tmediatek,kpd-hw-map-num = <%d>;\n''' %(KpdData.get_row() * KpdData.get_col())
-        else:
-            gen_str += '''\t/*HW Keycode [0~%d] -> Linux Keycode*/\n''' %(KpdData.get_row_ext() * KpdData.get_col_ext() - 1)
-            gen_str += '''\tmediatek,kpd-hw-map-num = <%d>;\n''' %(KpdData.get_row_ext() * KpdData.get_col_ext())
+        gen_str += '''\t/*HW Keycode [0~%d] -> Linux Keycode*/\n''' %(KpdData.get_row() * KpdData.get_col() - 1)
+        gen_str += '''\tmediatek,kpd-hw-map-num = <%d>;\n''' %(KpdData.get_row() * KpdData.get_col())
         gen_str += '''\tmediatek,kpd-hw-init-map = <'''
 
         if KpdData.get_keyType() == 'NORMAL_TYPE':
@@ -323,12 +285,12 @@ class KpdObj(ModuleObj):
         gen_str += '''\tmediatek,kpd-pwrkey-eint-gpio = <%d>;\n''' %(KpdData.get_gpioNum())
         gen_str += '''\tmediatek,kpd-pwkey-gpio-din  = <%d>;\n''' %(int(KpdData.get_gpioDinHigh()))
         for key in KpdData.get_downloadKeys():
-            if key == 'NC':
+            if cmp(key, 'NC') == 0:
                 continue
             gen_str += '''\tmediatek,kpd-hw-dl-key%d = <%s>;\n''' %(KpdData.get_downloadKeys().index(key), self.get_matrixIdx(key))
 
         for (key, value) in KpdData.get_modeKeys().items():
-            if value == 'NC':
+            if cmp(value, 'NC') == 0:
                 continue
             gen_str += '''\tmediatek,kpd-hw-%s-key = <%d>;\n''' %(key.lower(), self.get_matrixIdx(value))
 
@@ -338,66 +300,7 @@ class KpdObj(ModuleObj):
         return gen_str
 
 
-class KpdObj_MT6879(KpdObj):
-    def fill_dtsiFile(self):
-        if KpdData.get_row() == 0 or KpdData.get_col() == 0:
-            return ""
-        gen_str = '''&keypad {\n'''
-        gen_str += '''\tmediatek,key-debounce = <%d>;\n''' %(KpdData.get_pressTime())
-        gen_str += '''\tmediatek,sw-pwrkey = <%d>;\n''' %(KpdData._keyValueMap[KpdData.get_utility()])
-        if KpdData.get_keyType() == 'NORMAL_TYPE':
-            gen_str += '''\tmediatek,hw-pwrkey = <%d>;\n''' %(KpdData.get_col()-1)
-        else:
-            gen_str += '''\tmediatek,hw-pwrkey = <%d>;\n''' %(KpdData.get_col_ext()-1)
 
-        #gen_str += '''\tmediatek,kpd-sw-rstkey  = <%d>;\n''' %(KpdData._keyValueMap[KpdData.get_homeKey()])
-        if KpdData.get_homeKey() != '':
-            gen_str += '''\tmediatek,sw-rstkey  = <%d>;\n''' %(KpdData.get_keyVal(KpdData.get_homeKey()))
-        if KpdData.get_keyType() == 'NORMAL_TYPE':
-            if KpdData.get_homeKey() != '':
-                gen_str += '''\tmediatek,hw-rstkey = <%d>;\n''' %(2*KpdData.get_col() - 1)
-            gen_str += '''\tmediatek,use-extend-type = <0>;\n'''
-        else:
-            if KpdData.get_homeKey() != '':
-                gen_str += '''\tmediatek,hw-rstkey = <%d>;\n''' %(2*KpdData.get_col_ext() - 1)
-            gen_str += '''\tmediatek,use-extend-type = <1>;\n'''
-
-        #gen_str += '''\tmediatek,kpd-use-extend-type = <0>;\n'''
-        if KpdData.get_keyType() == 'NORMAL_TYPE':
-            gen_str += '''\t/*HW Keycode [0~%d] -> Linux Keycode*/\n''' %(KpdData.get_row() * KpdData.get_col() - 1)
-            gen_str += '''\tmediatek,hw-map-num = <%d>;\n''' %(KpdData.get_row() * KpdData.get_col())
-        else:
-            gen_str += '''\t/*HW Keycode [0~%d] -> Linux Keycode*/\n''' %(KpdData.get_row_ext() * KpdData.get_col_ext() - 1)
-            gen_str += '''\tmediatek,hw-map-num = <%d>;\n''' %(KpdData.get_row_ext() * KpdData.get_col_ext())
-        gen_str += '''\tmediatek,hw-init-map = <'''
-
-        if KpdData.get_keyType() == 'NORMAL_TYPE':
-            for key in KpdData.get_matrix():
-                idx = KpdData._keyValueMap[key]
-                gen_str += '''%d ''' %(idx)
-        else:
-            for key in KpdData.get_matrix_ext():
-                idx = KpdData._keyValueMap[key]
-                gen_str += '''%d ''' %(idx)
-
-        gen_str.rstrip()
-        gen_str += '''>;\n'''
-        gen_str += '''\tmediatek,pwrkey-eint-gpio = <%d>;\n''' %(KpdData.get_gpioNum())
-        gen_str += '''\tmediatek,pwkey-gpio-din  = <%d>;\n''' %(int(KpdData.get_gpioDinHigh()))
-        for key in KpdData.get_downloadKeys():
-            if key == 'NC':
-                continue
-            gen_str += '''\tmediatek,hw-dl-key%d = <%s>;\n''' %(KpdData.get_downloadKeys().index(key), self.get_matrixIdx(key))
-
-        for (key, value) in KpdData.get_modeKeys().items():
-            if value == 'NC':
-                continue
-            gen_str += '''\tmediatek,hw-%s-key = <%d>;\n''' %(key.lower(), self.get_matrixIdx(value))
-
-        gen_str += '''\tstatus = \"okay\";\n'''
-        gen_str += '''};\n'''
-
-        return gen_str
 
 
 
