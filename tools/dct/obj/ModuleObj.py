@@ -12,6 +12,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See http://www.gnu.org/licenses/gpl-2.0.html for more details.
 
+from builtins import object
 import os, sys
 import time
 import re
@@ -21,7 +22,7 @@ from utility import version
 from utility.util import log
 from utility.util import LogLevel
 
-class ModuleObj:
+class ModuleObj(object):
     _chip_id = ''
     _gen_path = ''
 

@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See http://www.gnu.org/licenses/gpl-2.0.html for more details.
 
-class GpioData:
+from builtins import object
+class GpioData(object):
     _count = 0
     _modNum = 8
     _specMap = {}
@@ -136,7 +137,7 @@ class GpioData:
 
     @staticmethod
     def get_modeName(key, idx):
-        if key in GpioData._modeMap.keys():
+        if key in list(GpioData._modeMap.keys()):
             value = GpioData._modeMap[key]
             return value[idx]
 

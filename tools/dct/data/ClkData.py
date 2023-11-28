@@ -12,7 +12,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See http://www.gnu.org/licenses/gpl-2.0.html for more details.
 
-class ClkData:
+from builtins import object
+class ClkData(object):
     _varList = ['DISABLE', 'SW_CONTROL', 'HW_CONTROL']
     _count = 0
 
