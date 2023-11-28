@@ -115,13 +115,13 @@ class ClkObj(ModuleObj):
         gen_str += '''} MTK_CLK_BUF_DRIVING_CURR;\n'''
         gen_str += '''\n'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             gen_str += '''#define %s_STATUS_PMIC\t\tCLOCK_BUFFER_%s\n''' %(key[5:], value.get_varName().upper())
 
         gen_str += '''\n'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             idx = value.get_curList().index(value.get_current())
             if cmp(value.get_curList()[0], DEFAULT_AUTOK) == 0:
@@ -142,7 +142,7 @@ class ClkObj(ModuleObj):
         gen_str += '''\tmediatek,clkbuf-config = <'''
 
         #sorted_list = sorted(ModuleObj.get_data(self).keys())
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             if key.find('PMIC') == -1:
                 continue
             value = ModuleObj.get_data(self)[key]
@@ -154,7 +154,7 @@ class ClkObj(ModuleObj):
         gen_str += '''\tmediatek,clkbuf-driving-current = <'''
 
         #sorted_list = sorted(ModuleObj.get_data(self).keys())
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             if key.find('PMIC') == -1:
                 continue
             value = ModuleObj.get_data(self)[key]
@@ -203,14 +203,14 @@ class ClkObj_Everest(ClkObj):
         gen_str += '''} MTK_CLK_BUF_DRIVING_CURR;\n'''
         gen_str += '''\n'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if key.find(self.__pmic) != -1:
                 gen_str += '''#define %s_STATUS_PMIC\t\t\t\tCLOCK_BUFFER_%s\n''' %(key[5:], value.get_varName())
 
         gen_str += '''\n'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if key.find(self.__pmic) != -1:
                 gen_str += '''#define %s_DRIVING_CURR\t\tCLK_BUF_DRIVING_CURR_%sMA\n''' %(key, value.get_current().replace('.', '_'))
@@ -218,14 +218,14 @@ class ClkObj_Everest(ClkObj):
         gen_str += '''\n'''
 
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if key.find(self.__rf) != -1:
                 gen_str += '''#define %s_STATUS\t\tCLOCK_BUFFER_%s\n''' %(key[3:], value.get_varName())
 
         gen_str += '''\n'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if key.find(self.__rf) != -1:
                 gen_str += '''#define %s_DRIVING_CURR\t\tCLK_BUF_DRIVING_CURR_%sMA\n''' %(key, value.get_current().replace('.', '_'))
@@ -249,7 +249,7 @@ class ClkObj_Everest(ClkObj):
 
         #sorted_list = sorted(ModuleObj.get_data(self).keys())
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
 
             if key.find(self.__rf) != -1:
@@ -259,7 +259,7 @@ class ClkObj_Everest(ClkObj):
 
         gen_str += '''\tmediatek,clkbuf-driving-current = <'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if key.find(self.__rf) != -1:
                 idx = value.get_curList().index(value.get_current())
@@ -306,14 +306,14 @@ class ClkObj_Olympus(ClkObj_Everest):
         gen_str += '''} MTK_CLK_BUF_DRIVING_CURR;\n'''
         gen_str += '''\n'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if key.find('PMIC') != -1:
                 gen_str += '''#define %s_STATUS_PMIC\t\tCLOCK_BUFFER_%s\n''' %(key[5:], value.get_varName())
 
         gen_str += '''\n'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if key.find('RF') != -1:
                 gen_str += '''#define %s_STATUS\t\t\t\tCLOCK_BUFFER_%s\n''' %(key[3:], value.get_varName())
@@ -321,7 +321,7 @@ class ClkObj_Olympus(ClkObj_Everest):
         gen_str += '''\n'''
 
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             if key.find('PMIC') != -1:
                 continue
             value = ModuleObj.get_data(self)[key]
@@ -337,7 +337,7 @@ class ClkObj_Olympus(ClkObj_Everest):
         gen_str += '''\n'''
 
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             if key.find('RF') != -1:
                 continue
             value = ModuleObj.get_data(self)[key]
@@ -409,14 +409,14 @@ class ClkObj_Rushmore(ClkObj):
         gen_str += '''\n'''
 
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if key.find('RF') != -1:
                 gen_str += '''#define %s_STATUS\t\t\t\tCLOCK_BUFFER_%s\n''' %(key[3:], value.get_varName())
 
         gen_str += '''\n'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             if key.find('RF') != -1:
                 continue
             value = ModuleObj.get_data(self)[key]
@@ -439,7 +439,7 @@ class ClkObj_Rushmore(ClkObj):
         gen_str += '''\tmediatek,clkbuf-config = <'''
 
         #sorted_list = sorted(ModuleObj.get_data(self).keys())
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             if key.find('RF') == -1:
                 continue
             value = ModuleObj.get_data(self)[key]
@@ -524,7 +524,7 @@ class ClkObj_MT6779(ClkObj):
         # generate some dummy data, used for generating dtsi file
         for i in range(max_count):
             key = "PMIC_CLK_BUF" + "%s" % (i + 1)
-            if key not in list(ModuleObj.get_data(self).keys()):
+            if key not in (ModuleObj.get_data(self).keys()):
                 data = NewClkData()
                 ModuleObj.set_data(self, key, data)
 
@@ -560,14 +560,14 @@ class ClkObj_MT6779(ClkObj):
         gen_str += '''} MTK_CLK_BUF_CONTROLS_FOR_DESENSE;\n'''
         gen_str += '''\n'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if len(value.get_varName()):
                 gen_str += '''#define %s_STATUS_PMIC\t\tCLOCK_BUFFER_%s\n''' % (key[5:], value.get_varName().upper())
 
         gen_str += '''\n'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if len(value.cur_buf_output_list) and len(value.cur_buf_output):
                 idx = value.cur_buf_output_list.index(value.cur_buf_output)
@@ -575,7 +575,7 @@ class ClkObj_MT6779(ClkObj):
 
         gen_str += '''\n'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if len(value.cur_driving_control_list) and len(value.cur_driving_control):
                 idx = value.cur_driving_control_list.index(value.cur_driving_control)
@@ -590,7 +590,7 @@ class ClkObj_MT6779(ClkObj):
         gen_str += '''\tmediatek,clkbuf-quantity = <%d>;\n''' % self.__count
         gen_str += '''\tmediatek,clkbuf-config = <'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             if key.find('PMIC') == -1:
                 continue
             value = ModuleObj.get_data(self)[key]
@@ -604,7 +604,7 @@ class ClkObj_MT6779(ClkObj):
 
         gen_str += '''\tmediatek,clkbuf-output-impedance = <'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             if key.find('PMIC') == -1:
                 continue
             value = ModuleObj.get_data(self)[key]
@@ -619,7 +619,7 @@ class ClkObj_MT6779(ClkObj):
 
         gen_str += '''\tmediatek,clkbuf-controls-for-desense = <'''
 
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             if key.find('PMIC') == -1:
                 continue
             value = ModuleObj.get_data(self)[key]

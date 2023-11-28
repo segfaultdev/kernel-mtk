@@ -223,7 +223,7 @@ class KpdObj(ModuleObj):
         gen_str += '''/****************Uboot Customation**************************/\n'''
         gen_str += '''/***********************************************************/\n'''
 
-        for (key, value) in list(KpdData.get_modeKeys().items()):
+        for (key, value) in (KpdData.get_modeKeys().items()):
             if cmp(value, 'NC') != 0:
                 idx = self.get_matrixIdx(value)
                 #idx = KpdData.get_matrix().index(value)
@@ -293,7 +293,7 @@ class KpdObj(ModuleObj):
                 continue
             gen_str += '''\tmediatek,kpd-hw-dl-key%d = <%s>;\n''' %(KpdData.get_downloadKeys().index(key), self.get_matrixIdx(key))
 
-        for (key, value) in list(KpdData.get_modeKeys().items()):
+        for (key, value) in (KpdData.get_modeKeys().items()):
             if cmp(value, 'NC') == 0:
                 continue
             gen_str += '''\tmediatek,kpd-hw-%s-key = <%d>;\n''' %(key.lower(), self.get_matrixIdx(value))

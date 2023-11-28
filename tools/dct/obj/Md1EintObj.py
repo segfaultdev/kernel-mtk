@@ -120,7 +120,7 @@ class Md1EintObj(ModuleObj):
         gen_str += '''\n'''
 
         if self.__bSrcPinEnable:
-            for (key, value) in list(self.__srcPin.items()):
+            for (key, value) in (self.__srcPin.items()):
                 gen_str += '''#define %s\t\t%s\n''' %(key, value)
             gen_str += '''\n'''
 
@@ -133,7 +133,7 @@ class Md1EintObj(ModuleObj):
         gen_str += '''\n'''
 
         count = 0
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if cmp(value.get_varName(), 'NC') == 0:
                 continue
@@ -158,7 +158,7 @@ class Md1EintObj(ModuleObj):
     def fill_dtsiFile(self):
         gen_str = ''
         gen_str += '''&eintc {\n'''
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if cmp(value.get_varName(), 'NC') == 0:
                 continue
@@ -208,7 +208,7 @@ class Md1EintObj_MT6739(Md1EintObj):
 
     def fill_dtsiFile(self):
         gen_str = ''
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if cmp(value.get_varName(), 'NC') == 0:
                 continue

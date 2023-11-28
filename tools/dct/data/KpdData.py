@@ -153,7 +153,7 @@ class KpdData(object):
 
     @staticmethod
     def get_keyVal(key):
-        if key in list(KpdData._keyValueMap.keys()):
+        if key in (KpdData._keyValueMap.keys()):
             return KpdData._keyValueMap[key]
 
         return 0

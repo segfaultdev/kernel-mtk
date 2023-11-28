@@ -74,7 +74,7 @@ class PowerObj(ModuleObj):
 
     def fill_hFile(self):
         gen_str = ''
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             if value.get_varName() == '':
                 continue

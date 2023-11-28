@@ -74,7 +74,7 @@ class EintData(object):
     def get_modeName(gpio_num, mode_idx):
         key = 'gpio%s' %(gpio_num)
 
-        if key in list(EintData._mode_map.keys()):
+        if key in (EintData._mode_map.keys()):
             list =  EintData._mode_map[key]
             if mode_idx < len(list) and mode_idx >= 0:
                 return list[mode_idx]
@@ -83,7 +83,7 @@ class EintData(object):
 
     @staticmethod
     def set_modeMap(map):
-        for (key, value) in list(map.items()):
+        for (key, value) in (map.items()):
             list = []
             for item in value:
                 list.append(item[6:len(item)-1])
@@ -98,7 +98,7 @@ class EintData(object):
     @staticmethod
     def get_gpioNum(num):
         if len(EintData._map_table):
-            for (key,value) in list(EintData._map_table.items()):
+            for (key,value) in (EintData._map_table.items()):
                 if num == value:
                     return key
 

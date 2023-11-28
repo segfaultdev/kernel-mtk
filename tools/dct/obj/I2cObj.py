@@ -108,7 +108,7 @@ class I2cObj(ModuleObj):
         gen_str += '''\n'''
 
         #sorted_lst = sorted(ModuleObj.get_data(self).keys(), key=compare)
-        for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+        for key in sorted_key((ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             temp = ''
             if value.get_address().strip() == '':
@@ -142,7 +142,7 @@ class I2cObj(ModuleObj):
                     temp_str = 'use-push-pull'
                 gen_str += '''\tmediatek,%s;\n''' %(temp_str)
 
-            for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+            for key in sorted_key((ModuleObj.get_data(self).keys())):
                 value = ModuleObj.get_data(self)[key]
                 channel = 'I2C_CHANNEL_%d' %(i)
                 if cmp(value.get_channel(), channel) == 0 and cmp(value.get_varName(), 'NC') != 0 and value.get_address().strip() != '':
@@ -189,7 +189,7 @@ class I2cObj_MT6759(I2cObj):
                     temp_str = 'use-push-pull'
                 gen_str += '''\tmediatek,%s;\n''' %(temp_str)
 
-            for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+            for key in sorted_key((ModuleObj.get_data(self).keys())):
                 value = ModuleObj.get_data(self)[key]
                 channel = 'I2C_CHANNEL_%d' %(i)
                 if cmp(value.get_channel(), channel) == 0 and cmp(value.get_varName(), 'NC') != 0 and value.get_address().strip() != '':
@@ -227,7 +227,7 @@ class I2cObj_MT6775(I2cObj):
                     temp_str = 'use-push-pull'
                 gen_str += '''\tmediatek,%s;\n''' %(temp_str)
 
-            for key in sorted_key(list(ModuleObj.get_data(self).keys())):
+            for key in sorted_key((ModuleObj.get_data(self).keys())):
                 value = ModuleObj.get_data(self)[key]
                 channel = 'I2C_CHANNEL_%d' %(i)
                 if cmp(value.get_channel(), channel) == 0 and cmp(value.get_varName(), 'NC') != 0 and value.get_address().strip() != '':
