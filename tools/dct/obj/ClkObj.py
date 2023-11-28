@@ -47,7 +47,7 @@ class ClkObj(ModuleObj):
                 key = re.findall(r'\D+', node.nodeName)[0].upper() + self._suffix + '%s' %(re.findall(r'\d+', node.nodeName)[0])
 
                 if key not in ModuleObj.get_data(self):
-	                continue;
+                  continue;
 
                 data = ModuleObj.get_data(self)[key]
 
@@ -119,7 +119,7 @@ class ClkObj(ModuleObj):
         for key in sorted_key(list(ModuleObj.get_data(self).keys())):
             value = ModuleObj.get_data(self)[key]
             idx = value.get_curList().index(value.get_current())
-            if cmp(value.get_curList()[0], DEFAULT_AUTOK) == 0:
+            if value.get_curList()[0] == DEFAULT_AUTOK:
                 idx -= 1
 
             if idx >= 0:
@@ -154,7 +154,7 @@ class ClkObj(ModuleObj):
                 continue
             value = ModuleObj.get_data(self)[key]
             idx = value.get_curList().index(value.get_current())
-            if cmp(value.get_curList()[0], DEFAULT_AUTOK) == 0:
+            if value.get_curList()[0] == DEFAULT_AUTOK:
                 idx -= 1
             if idx < 0:
                 gen_str += '''(%d) ''' %(-1)
@@ -258,7 +258,7 @@ class ClkObj_Everest(ClkObj):
             value = ModuleObj.get_data(self)[key]
             if key.find(self.__rf) != -1:
                 idx = value.get_curList().index(value.get_current())
-                if cmp(value.get_curList()[0], DEFAULT_AUTOK) == 0:
+                if value.get_curList()[0] == DEFAULT_AUTOK:
                     idx -= 1
                 gen_str += '''%d ''' %(idx)
 
@@ -321,7 +321,7 @@ class ClkObj_Olympus(ClkObj_Everest):
                 continue
             value = ModuleObj.get_data(self)[key]
             idx = value.get_curList().index(value.get_current())
-            if cmp(value.get_curList()[0], DEFAULT_AUTOK) == 0:
+            if value.get_curList()[0] == DEFAULT_AUTOK:
                 idx -= 1
 
             if idx >= 0:
@@ -337,7 +337,7 @@ class ClkObj_Olympus(ClkObj_Everest):
                 continue
             value = ModuleObj.get_data(self)[key]
             idx = value.get_curList().index(value.get_current())
-            if cmp(value.get_curList()[0], DEFAULT_AUTOK) == 0:
+            if value.get_curList()[0] == DEFAULT_AUTOK:
                 idx -= 1
 
             if idx >= 0:
@@ -416,7 +416,7 @@ class ClkObj_Rushmore(ClkObj):
                 continue
             value = ModuleObj.get_data(self)[key]
             idx = value.get_curList().index(value.get_current())
-            if cmp(value.get_curList()[0], DEFAULT_AUTOK) == 0:
+            if value.get_curList()[0] == DEFAULT_AUTOK:
                 idx -= 1
 
             if idx >= 0:
